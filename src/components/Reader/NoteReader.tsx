@@ -1,5 +1,5 @@
 import ReactMarkdown from 'react-markdown';
-import { Notebook, ChevronRight } from 'lucide-react';
+import { Notebook } from 'lucide-react';
 import { type Note } from '../../utils/loader';
 
 interface NoteReaderProps {

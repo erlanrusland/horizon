@@ -1,4 +1,4 @@
-import { ArrowRight, Sparkles, LayoutDashboard, Search, FileText } from 'lucide-react';
+import { ArrowRight, Sparkles, LayoutDashboard, FileText } from 'lucide-react';
 
 interface HeroProps {
   onStart: () => void;
