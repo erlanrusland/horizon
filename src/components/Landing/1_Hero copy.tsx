@@ -15,9 +15,11 @@ export const Hero = ({ onStart }: HeroProps) => {
         </div>
         
         {/* Ukuran teks disesuaikan: text-5xl di mobile (sm), text-7xl+ di layar besar */}
-        <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black mb-6 md:mb-10 tracking-[-0.05em] leading-[0.9] uppercase dark:text-white">
-          Keep Your <br />
-          <span className="text-blue-600 dark:text-blue-500 leading-none">Knowledge.</span>
+        <h1 className="text-[12vw] sm:text-7xl md:text-8xl lg:text-9xl font-black mb-6 md:mb-10 tracking-tighter leading-[0.85] uppercase dark:text-white break-words">
+        Keep Your <br />
+        <span className="text-blue-600 dark:text-blue-500 block sm:inline">
+          Knowledge.
+        </span>
         </h1>
         
         {/* Deskripsi lebih ramping di mobile */}
