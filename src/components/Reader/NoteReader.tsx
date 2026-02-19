@@ -27,7 +27,7 @@ export const NoteReader = ({ note }: NoteReaderProps) => {
         <div className="flex items-center gap-4 text-slate-400">
           <Notebook size={16} />
           <span className="text-sm font-medium italic">
-            Dokumentasi Erlan — Terakhir disinkronkan hari ini
+            Dokumentasi Erlan — Diperbarui {note.lastModified}
           </span>
         </div>
       </header>
