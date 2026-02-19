@@ -3,29 +3,39 @@ import react from '@vitejs/plugin-react';
 import fs from 'fs';
 
 export default defineConfig({
+  // Gunakan nama repo jika dideploy ke username.github.io/horizon/
+  base: '/horizon/', 
   plugins: [
     react(),
     {
       name: 'file-stats-extractor',
-      transform(code, id) {
-        // Target file md, txt, dan html di folder catatan
+      // Gunakan 'load' alih-alih 'transform' agar kita membaca file mentah 
+      // sebelum diproses oleh plugin lain.
+      load(id) {
         if (id.includes('/src/catatan/') && /\.(md|txt|html)$/.test(id)) {
           const stats = fs.statSync(id);
+          const rawContent = fs.readFileSync(id, 'utf-8');
           const date = stats.mtime.toLocaleDateString('id-ID', {
             day: 'numeric',
             month: 'long',
             year: 'numeric'
           });
 
-          // Kita bungkus konten aslinya menjadi string aman agar tidak error di HTML/MD
-          // Gunakan JSON.stringify untuk memastikan karakter aneh tidak merusak JS
-          return {
-            code: `export const lastModified = "${date}";
-                   export default ${JSON.stringify(code)};`,
-            map: null
-          };
+          // Inject metadata lastModified dan konten sebagai default export
+          return `
+            export const lastModified = "${date}";
+            export default ${JSON.stringify(rawContent)};
+          `;
         }
       }
     }
-  ]
+  ],
+  optimizeDeps: {
+    exclude: ['@tailwindcss/oxide', 'lightningcss']
+  },
+  build: {
+    rollupOptions: {
+      external: ['@tailwindcss/oxide', 'lightningcss']
+    }
+  }
 });
