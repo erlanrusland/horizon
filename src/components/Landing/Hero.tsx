@@ -6,62 +6,95 @@ interface HeroProps {
 
 export const Hero = ({ onStart }: HeroProps) => {
   return (
-    <>
-      {/* --- HERO SECTION UTAMA --- */}
-      <header className="pt-40 pb-24 md:pt-52 md:pb-32 px-6 text-center animate-in fade-in zoom-in-95 duration-700">
-        <div className="inline-block px-4 py-1.5 mb-8 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-xs font-black uppercase tracking-[0.2em] animate-bounce-subtle">
-          V.1 2026
+    <div className="relative overflow-x-hidden bg-white dark:bg-slate-950">
+      
+      {/* subtle background glow */}
+      <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none" />
+
+      {/* ================= HERO ================= */}
+      <header className="relative pt-36 pb-24 md:pt-48 md:pb-32 px-6 text-center">
+        
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-8 rounded-full border border-blue-200/40 dark:border-blue-500/20 bg-blue-50/60 dark:bg-blue-900/10 text-blue-600 dark:text-blue-400 text-xs font-semibold tracking-widest uppercase">
+          <Sparkles size={14} />
+          Version 1.0 • 2026
         </div>
-        
-        <h1 className="text-7xl md:text-8xl lg:text-9xl font-black mb-10 tracking-[-0.05em] leading-[0.85] uppercase dark:text-white">
-          Keep Your <br />
-          <span className="text-blue-600 dark:text-blue-500 leading-none">Knowledge.</span>
-        </h1>
-        
-        <p className="text-lg md:text-xl lg:text-2xl text-slate-500 dark:text-slate-400 mb-14 max-w-3xl mx-auto font-medium leading-relaxed">
-          Mendokumentasikan catatan dengan ErlandNotes di Horizon dengan cerdas untuk merangkum seluruh materi kuliah secara otomatis dan terstruktur.
-        </p>
-        
-        <button 
-          onClick={onStart}
-          className="group relative px-10 py-5 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-black text-xl rounded-3xl hover:scale-105 transition-all shadow-[0_20px_50px_rgba(37,99,235,0.3)] hover:shadow-[0_25px_60px_rgba(37,99,235,0.4)] overflow-hidden active:scale-95"
-        >
-          <span className="relative z-10 flex items-center gap-4">
-            MULAI EKSPLORASI 
-            <ArrowRight size={24} className="group-hover:translate-x-2 transition-transform" />
+
+        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[0.95] text-slate-900 dark:text-white mb-8">
+          Keep Your
+          <span className="block bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
+            Knowledge Organized
           </span>
-          {/* Efek Hover Background */}
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        </h1>
+
+        <p className="text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed mb-12">
+          Dokumentasikan catatan dengan{' '}
+          <span className="font-semibold text-slate-800 dark:text-slate-200">
+            ErlandNotes
+          </span>{' '}
+          secara cerdas, otomatis, dan terstruktur dalam satu workspace elegan.
+        </p>
+
+        <button
+          onClick={onStart}
+          className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg transition-all duration-300 shadow-lg shadow-blue-600/20 hover:shadow-blue-600/40 hover:-translate-y-1 active:translate-y-0"
+        >
+          Mulai Sekarang
+          <ArrowRight
+            size={20}
+            className="group-hover:translate-x-1 transition-transform"
+          />
         </button>
       </header>
 
-      {/* --- FEATURE SECTION --- */}
-      <section className="bg-slate-50 dark:bg-slate-900 py-24 px-6 md:px-8 lg:px-12 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-black mb-12 dark:text-white">
-            Tentang Erland<span className="text-blue-600">Notes</span>..!
-          </h2>
-          <div className="grid md:grid-cols-3 gap-10">
-            {/* Feature Card 1 */}
-            <div className="bg-white dark:bg-slate-950 p-8 rounded-3xl shadow-lg border border-slate-100 dark:border-slate-800 transform hover:scale-105 transition-transform duration-300 ease-out group">
-              <Sparkles size={48} className="text-blue-600 mb-6 mx-auto group-hover:rotate-12 transition-transform" />
-              <h3 className="text-2xl font-black mb-3 dark:text-white">Catatan Cerdas</h3>
+      {/* ================= FEATURES ================= */}
+      <section className="relative py-24 px-6 md:px-12">
+        <div className="max-w-6xl mx-auto">
+
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">
+              Kenapa Memilih <span className="text-blue-600">ErlandNotes</span>?
+            </h2>
+            <p className="text-slate-500 dark:text-slate-400 max-w-xl mx-auto">
+              Dirancang untuk produktivitas, fokus, dan kemudahan dalam mengelola pengetahuan Anda.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            {/* Card 1 */}
+            <div className="group p-8 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/60 backdrop-blur transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+              <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-900/30 mb-6">
+                <Sparkles size={22} className="text-blue-600" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3 dark:text-white">
+                Catatan Cerdas
+              </h3>
               <p className="text-slate-500 dark:text-slate-400 leading-relaxed">
-                Catatanmu terorganisir otomatis dalam folder, memudahkan navigasi ke materi spesifik.
+                Organisasi otomatis dalam folder dan kategori untuk akses cepat dan efisien.
               </p>
             </div>
-            {/* Feature Card 2 */}
-            <div className="bg-white dark:bg-slate-950 p-8 rounded-3xl shadow-lg border border-slate-100 dark:border-slate-800 transform hover:scale-105 transition-transform duration-300 ease-out group">
-              <LayoutDashboard size={48} className="text-emerald-600 mb-6 mx-auto group-hover:scale-110 transition-transform" />
-              <h3 className="text-2xl font-black mb-3 dark:text-white">Tampilan Intuitif</h3>
+
+            {/* Card 2 */}
+            <div className="group p-8 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/60 backdrop-blur transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+              <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-900/30 mb-6">
+                <LayoutDashboard size={22} className="text-emerald-600" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3 dark:text-white">
+                Tampilan Intuitif
+              </h3>
               <p className="text-slate-500 dark:text-slate-400 leading-relaxed">
-                Antarmuka bersih dan modern fokus pada kontenmu tanpa gangguan.
+                Interface modern yang bersih dan fokus pada konten tanpa distraksi.
               </p>
             </div>
-            {/* Feature Card 3 */}
-            <div className="bg-white dark:bg-slate-950 p-8 rounded-3xl shadow-lg border border-slate-100 dark:border-slate-800 transform hover:scale-105 transition-transform duration-300 ease-out group">
-              <FileText size={48} className="text-purple-600 mb-6 mx-auto group-hover:-translate-y-1 transition-transform" />
-              <h3 className="text-2xl font-black mb-3 dark:text-white">Dukungan Multi-Format</h3>
+
+            {/* Card 3 */}
+            <div className="group p-8 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/60 backdrop-blur transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+              <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-purple-100 dark:bg-purple-900/30 mb-6">
+                <FileText size={22} className="text-purple-600" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3 dark:text-white">
+                Multi-Format
+              </h3>
               <p className="text-slate-500 dark:text-slate-400 leading-relaxed">
                 Mendukung Markdown, HTML, dan Plain Text untuk fleksibilitas dokumentasi.
               </p>
@@ -70,10 +103,10 @@ export const Hero = ({ onStart }: HeroProps) => {
         </div>
       </section>
 
-      {/* --- FOOTER (Opsional) --- */}
-      <footer className="py-12 text-center text-slate-400 text-sm bg-white dark:bg-slate-950 border-t border-slate-100 dark:border-slate-800 animate-in fade-in duration-1000 delay-300">
-        <p>&copy; 2026 HorizonNotes by Erlan. All rights reserved.</p>
+      {/* ================= FOOTER ================= */}
+      <footer className="py-12 text-center text-sm text-slate-400 border-t border-slate-200 dark:border-slate-800">
+        © 2026 ErlandNotes — Crafted by Erlan
       </footer>
-    </>
+    </div>
   );
 };
