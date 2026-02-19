@@ -3,33 +3,30 @@ export interface Note {
   fileName: string;
   content: string;
   extension: 'md' | 'html' | 'txt';
-  lastModified: string;
+  lastModified: string; 
 }
 
 export interface FolderNode {
   name: string;
   files: Note[];
-  // Kita gunakan array agar Sidebar lebih mudah melakukan mapping
-  subFolders: FolderNode[]; 
-}
-
-// Interface internal untuk memudahkan proses building tree
-interface TempFolderNode {
-  name: string;
-  files: Note[];
-  subFolders: Record<string, TempFolderNode>;
+  subFolders: Record<string, FolderNode>;
 }
 
 export const getCatatanTree = (): FolderNode => {
-  // Ambil semua modul tanpa ?raw agar metadata (lastModified) terbaca
+  /**
+   * REFACTOR UTAMA:
+   * Hapus `query: '?raw'` dan `import: 'default'`.
+   * Kita butuh seluruh objek modul karena plugin menyuntikkan 
+   * 'lastModified' sebagai export bernama.
+   */
   const modules = import.meta.glob('/src/catatan/**/*.{md,txt,html}', { 
     eager: true 
   });
 
-  const root: TempFolderNode = { name: 'Catatan', files: [], subFolders: {} };
+  const root: FolderNode = { name: 'root', files: [], subFolders: {} };
 
   Object.entries(modules).forEach(([path, moduleData]) => {
-    // Type assertion agar TS tahu ada properti 'default' dan 'lastModified'
+    // Karena tidak pakai ?raw, data modul ada di dalam objek moduleData
     const mod = moduleData as { default: string; lastModified?: string };
     
     const parts = path.split('/');
@@ -46,9 +43,15 @@ export const getCatatanTree = (): FolderNode => {
         
         currentNode.files.push({
           id: path,
-          fileName: part.replace(/\.(md|txt|html)$/, ''), // Bersihkan ekstensi dari nama
-          content: typeof mod.default === 'string' ? mod.default : '', 
+          fileName: part,
+          // Isi teks file sekarang ada di mod.default
+          content: mod.default || '', 
           extension: extension || 'md',
+          /**
+           * MENGAMBIL TANGGAL ASLI:
+           * Jika plugin berhasil, mod.lastModified akan berisi tanggal 18.
+           * Jika gagal/file baru, kita beri fallback tanggal hari ini.
+           */
           lastModified: mod.lastModified || new Date().toLocaleDateString('id-ID', {
             day: 'numeric',
             month: 'long',
@@ -64,12 +67,5 @@ export const getCatatanTree = (): FolderNode => {
     });
   });
 
-  // Konversi Record ke Array secara rekursif agar sesuai interface FolderNode
-  const formatNode = (node: TempFolderNode): FolderNode => ({
-    name: node.name,
-    files: node.files,
-    subFolders: Object.values(node.subFolders).map(formatNode)
-  });
-
-  return formatNode(root);
+  return root;
 };
