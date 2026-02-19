@@ -1,5 +1,24 @@
+export interface Note {
+  id: string;
+  fileName: string;
+  content: string;
+  extension: 'md' | 'html' | 'txt';
+  lastModified: string; 
+}
+
+export interface FolderNode {
+  name: string;
+  files: Note[];
+  subFolders: Record<string, FolderNode>;
+}
+
 export const getCatatanTree = (): FolderNode => {
-  // Tanpa ?raw, biarkan plugin kita yang mengurus transformasinya
+  /**
+   * REFACTOR UTAMA:
+   * Hapus `query: '?raw'` dan `import: 'default'`.
+   * Kita butuh seluruh objek modul karena plugin menyuntikkan 
+   * 'lastModified' sebagai export bernama.
+   */
   const modules = import.meta.glob('/src/catatan/**/*.{md,txt,html}', { 
     eager: true 
   });
@@ -7,7 +26,8 @@ export const getCatatanTree = (): FolderNode => {
   const root: FolderNode = { name: 'root', files: [], subFolders: {} };
 
   Object.entries(modules).forEach(([path, moduleData]) => {
-    const mod = moduleData as { default: string; lastModified: string };
+    // Karena tidak pakai ?raw, data modul ada di dalam objek moduleData
+    const mod = moduleData as { default: string; lastModified?: string };
     
     const parts = path.split('/');
     const catatanIndex = parts.indexOf('catatan');
@@ -24,9 +44,19 @@ export const getCatatanTree = (): FolderNode => {
         currentNode.files.push({
           id: path,
           fileName: part,
-          content: mod.default, // Konten yang sudah aman disuntik plugin
+          // Isi teks file sekarang ada di mod.default
+          content: mod.default || '', 
           extension: extension || 'md',
-          lastModified: mod.lastModified // Tanggal asli dari OS
+          /**
+           * MENGAMBIL TANGGAL ASLI:
+           * Jika plugin berhasil, mod.lastModified akan berisi tanggal 18.
+           * Jika gagal/file baru, kita beri fallback tanggal hari ini.
+           */
+          lastModified: mod.lastModified || new Date().toLocaleDateString('id-ID', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+          })
         });
       } else {
         if (!currentNode.subFolders[part]) {
